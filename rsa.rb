@@ -78,23 +78,8 @@ def encrypt
   # get message
   puts "type message:"
   msg = STDIN.gets.chomp
-  # get ordinals of each character
-  ords = msg.each_char.map do |c|
-    # space is 0
-    if c == ' '
-      0
-    # a == 1, b == 2...
-    elsif ('a'..'z').member? c;
-      c.ord - 'a'.ord + 1
-    else
-      # we could instead of using 0-26, use the ascii ordinals, but we want
-      # the ciphertext to be readable and pronounceable
-      warn "cannot encrypt `#{c}'"
-      exit 1
-    end
-  end
-  # encrypt and print each ordinal
-  puts ords.map {|x| x**e % n}.join(' ')
+  # encrypt and print each character's ordinal
+  puts msg.each_char.map {|char| char.ord**e % n}.join(' ')
 end
 
 def decrypt
@@ -107,17 +92,7 @@ def decrypt
   puts "type message:"
   msg = STDIN.gets.chomp
   # extract tokens, decrypt, and print
-  ords = msg.scan(/\d+/).map do |token|
-    ord = Integer(token) ** d % n
-    if (1..26).member? ord
-      ord + 'a'.ord - 1
-    elsif 0 == ord
-      ' '.ord
-    else
-      '?'.ord
-    end
-  end
-  puts ords.map(&:chr).join
+  puts msg.scan(/\d+/).map {|token| (Integer(token)**d % n).chr}.join
 end
 
 def crack
