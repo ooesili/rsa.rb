@@ -37,7 +37,7 @@ KEY_SPACE = 100
 
 #========== KEY DERIVATION ==========#
 
-# pick a random number "e" between 1 and phi, such that d is a coprime of phi
+# pick a random number "e" between 1 and phi, such that e is a coprime of phi
 def get_public(phi)
   (2...phi).find_all {|e| e.gcd(phi) == 1}.sample
 end
